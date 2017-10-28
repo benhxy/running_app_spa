@@ -13,8 +13,7 @@ export default React.createClass( {
       compName: "Running log",
       runList: [],
       runListFiltered: [],
-      warning: "",
-      token: localStorage.token
+      warning: ""
     };
   },
 
@@ -26,33 +25,35 @@ export default React.createClass( {
   getRunList(){
     //load run list from server, sort and deep copy into states
     //fetch(url, config{method, body{}})
-    fetch("/api/run_admin/",
-          {method: "GET", body: {token : localStorage.token}})
-          .then(response => {
-            if (response.data.success) {
-              let sortedList = response.data.message.sort(
-                function compare(a, b) {
-                  if (moment(a.date) === moment(b.date)) {
-                    return 0;
-                  }
-                  //latest run logs first
-                  if (moment(a.date) > moment(b.date)) {
-                    return -1;
-                  }
-                  return 1;
-                }
-              );
-              this.setState({
-                runList: JSON.parse(JSON.stringify(sortedList)),
-                runListFiltered: JSON.parse(JSON.stringify(sortedList))
-              });
-            } else {
-              this.setState({warning: response.data.message});
+    axios.post("/api/run_admin/",
+              {token : localStorage.getItem("RunAppToken"),
+               action: "POST"},
+              {crossdomain: true})
+      .then(response => {
+        if (response.data.success) {
+          let sortedList = response.data.message.sort(
+            function compare(a, b) {
+              if (moment(a.date) === moment(b.date)) {
+                return 0;
+              }
+              //latest run logs first
+              if (moment(a.date) > moment(b.date)) {
+                return -1;
+              }
+              return 1;
             }
-          })
-          .catch(error => {
-            this.setState({warning: response.data.message});
+          );
+          this.setState({
+            runList: JSON.parse(JSON.stringify(sortedList)),
+            runListFiltered: JSON.parse(JSON.stringify(sortedList))
           });
+        } else {
+          this.setState({warning: response.data.message});
+        }
+      })
+      .catch(error => {
+        this.setState({warning: response.data.message});
+      });
   },
 
   handleFilter(evt) {
@@ -104,7 +105,7 @@ export default React.createClass( {
 
         <WarningCard warning={this.state.warning}/>
 
-        <form onSubmit={this.handleFilter.bind(this)}>
+        <form onSubmit={this.handleFilter}>
           <div className="input-field">
             <p>From date (YYYY-MM-DD)</p>
             <input type="date" name="fromDate" ref="fromDate"/>

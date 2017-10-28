@@ -13,8 +13,7 @@ export default React.createClass( {
       compName: "Running log",
       runList: [],
       runListFiltered: [],
-      warning: "",
-      token: localStorage.token
+      warning: ""
     };
   },
 
@@ -26,7 +25,9 @@ export default React.createClass( {
   getRunList(){
     //load run list from server, sort and deep copy into states
     //fetch(url, config{method, body{}})
-    axios.post("/api/run_admin/",{token : localStorage.token}, {crossdomain: true})
+    axios.post("/api/run/",
+              {token : localStorage.getItem("RunAppToken"), action: "POST"},
+              {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           let sortedList = response.data.message.sort(
@@ -103,7 +104,7 @@ export default React.createClass( {
 
         <WarningCard warning={this.state.warning}/>
 
-        <form onSubmit={this.handleFilter.bind(this)}>
+        <form onSubmit={this.handleFilter}>
           <div className="input-field">
             <p>From date (YYYY-MM-DD)</p>
             <input type="date" name="fromDate" ref="fromDate"/>

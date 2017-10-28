@@ -5,7 +5,7 @@ import moment from "moment";
 
 import WarningCard from "./WarningCard";
 
-class RunItemDetail extends Component {
+class RunDetail extends Component {
 
   getInitialState() {
     // super(props);
@@ -26,7 +26,9 @@ class RunItemDetail extends Component {
   getRunDetail(){
     let runId = this.props.match.params.id;
 
-    axios.get(`/api/run_admin/${runId}`, {crossdomain: true})
+    axios.post(`/api/run/${runId}`,
+              {token: localStorage.getItem("RunAppToken"), action: "GET"},
+              {crossdomain: true})
       .then((response) => {
         if (response.data.success) {
           this.setState({
@@ -82,10 +84,11 @@ class RunItemDetail extends Component {
     const updatedRun = {
       date: this.state.date,
       dist: this.state.dist,
-      time: this.state.time
+      time: this.state.time,
+      token: localStorage.getItem("RunAppToken")
     }
 
-    axios.put(`/api/run_admin/${runId}`, updatedRun, {crossdomain: true})
+    axios.put(`/api/run/${runId}`, updatedRun, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -99,7 +102,7 @@ class RunItemDetail extends Component {
 
   handleDelete() {
     const runId = this.state.id;
-    axios.delete(`/api/run_admin/${runId}`, {crossdomain: true})
+    axios.delete(`/api/run/${runId}`, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -119,23 +122,23 @@ class RunItemDetail extends Component {
           <WarningCard warning={this.state.warning} />
           <h5>Date</h5>
 
-          <input type="text" className="datepicker" value={this.state.date} onChange={this.handleDateChange.bind(this)}/>
+          <input type="text" className="datepicker" value={this.state.date} onChange={this.handleDateChange}/>
 
           <h5>Distance (km)</h5>
-          <input value={this.state.dist} onChange={this.handleDistChange.bind(this)}/>
+          <input value={this.state.dist} onChange={this.handleDistChange}/>
 
           <h5>Time (minutes)</h5>
-          <input value={this.state.time} onChange={this.handleTimeChange.bind(this)}/>
+          <input value={this.state.time} onChange={this.handleTimeChange}/>
 
 
-          <div className="btn blue" onClick={this.handleSubmit.bind(this)}>Submit</div>
+          <div className="btn blue" onClick={this.handleSubmit}>Submit</div>
           <span>  </span>
           <Link to="/run" className="btn blue">Cancel</Link>
           <span>  </span>
-          <div className="btn red" onClick={this.handleDelete.bind(this)}>Delete</div>
+          <div className="btn red" onClick={this.handleDelete}>Delete</div>
         </div>
     );
   }
 }
 
-export default RunItemDetail;
+export default RunDetail;

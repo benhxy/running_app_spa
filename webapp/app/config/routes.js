@@ -12,6 +12,12 @@ function redirectToLogin(nextState, replace) {
   }
 }
 
+function handleLogOut() {
+  localStorage.removeItem("RunAppToken");
+  localStorage.removeItem("RunAppRole");
+  localStorage.removeItem("RunAppUserId");
+}
+
 function checkUrlExist(nextState, replace){
   replace('/');
 }
@@ -46,6 +52,11 @@ const routes = {
           cb(null, require('../components/pages/Login.js').default)
         }, 'Login');
       }
+    },
+
+    {
+      path: '/logout',
+      onEnter: handleLogOut
     },
 
     {

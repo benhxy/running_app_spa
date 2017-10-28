@@ -1,141 +1,144 @@
 import React, { Component } from 'react';
 import {Link} from "react-router";
-import axios from 'axios';
-import moment from "moment";
+import axios from "axios";
 
 import WarningCard from "./WarningCard";
 
-class RunItemDetail extends Component {
+class UserItemDetail extends Component {
 
-  getInitialState() {
-    // super(props);
-    return {
-      compName: "Run details",
+  constructor(props) {
+    super(props);
+    this.state = {
+      compName: "User details",
       id: "",
-      date: "",
-      time: 0.0,
-      dist: 0.0,
+      name: "",
+      password: "",
+      role: "",
       warning: ""
     }
   }
 
   componentWillMount() {
-    this.getRunDetail();
+    this.getUserDetail();
   }
 
-  getRunDetail(){
-    let runId = this.props.match.params.id;
+  getUserDetail(){
+    let userId = this.props.match.params.id;
 
-    axios.get(`/api/run_admin/${runId}`, {crossdomain: true})
+    axios.post(`/api/user/${userId}`, {token: localStorage.getItem("RunAppToken"), action: "GET"}, {crossdomain: true})
       .then((response) => {
         if (response.data.success) {
           this.setState({
-            id: runId,
-            date:  moment(response.data.message.date).format("YYYY-MM-DD"),
-            time: Number(response.data.message.time).toFixed(0),
-            dist: Number(response.data.message.dist).toFixed(2)
+            id: userId,
+            name: response.data.message.name,
+            password: response.data.message.password,
+            role: response.data.message.role,
           });
         } else {
           this.setState({warning: response.data.message});
         }
       })
       .catch((err) => {
-        console.log(err);
+        this.setState({warning: err};
       });
   }
 
-  handleDateChange(evt){
-    this.setState({date: evt.target.value});
+  handleNameChange(evt){
+    this.setState({name: evt.target.value});
   }
 
-  handleDistChange(evt){
-    this.setState({dist: evt.target.value});
+  handlePasswordChange(evt){
+    this.setState({password: evt.target.value});
   }
 
-  handleTimeChange(evt){
-    this.setState({time: evt.target.value});
+  handleRoleChange(evt){
+    this.setState({role: evt.target.value});
   }
 
   handleSubmit(evt) {
     evt.preventDefault();
     //validate data
     //validate input
-    if (!moment(this.state.date, "YYYY-MM-DD").isValid()
-        || !moment(this.state.date).isValid()) {
-      this.setState({warning: "Please enter a valid date"});
+    if (this.state.name === "") {
+      this.setState({warning: "Please enter a valid name"});
       return;
     }
-    if (this.state.dist === "" || Number(this.state.dist) <= 0) {
-      this.setState({warning: "Please enter a positive number for distance"});
+    if (this.state.password === "") {
+      this.setState({warning: "Please enter a password"});
       return;
     }
-    if (this.state.time === "" || Number(this.state.time) <= 0) {
-      this.setState({warning: "Please enter a positive number for time"});
+    if (this.state.role !== "user" && this.state.role !== "userManager" && this.state.role !== "admin") {
+      this.setState({warning: "Please enter a role from user, userManager or admin"});
       return;
     }
 
-    this.putRun();
+    this.putUser();
   }
 
-  putRun() {
-    const runId = this.state.id;
-    const updatedRun = {
+  putUser() {
+    const userId = this.state.id;
+    const updatedUser = {
       date: this.state.date,
       dist: this.state.dist,
-      time: this.state.time
+      time: this.state.time,
+      token: localStorage.getItem("RunAppToken")
     }
 
-    axios.put(`/api/run_admin/${runId}`, updatedRun, {crossdomain: true})
+    axios.put(`/api/user/${userId}`, updatedUser, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
-          this.props.history.push("/run");
+          this.setState({warning: response.data.message});
         } else {
           //error from server
           this.setState({warning: response.data.message});
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        this.setState({warning: err};
+      });
   }
 
   handleDelete() {
-    const runId = this.state.id;
-    axios.delete(`/api/run_admin/${runId}`, {crossdomain: true})
+    const userId = this.state.id;
+    axios.delete(`http://localhost:3001/api/run_admin/${userId}`, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
-          this.props.history.push("/run");
+          this.props.history.push("/user");
         } else {
           //error from server
           this.setState({warning: response.data.message});
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        this.setState({warning: err};
+      });
   }
 
   render() {
-
     return (
         <div>
           <h3>{this.state.compName}</h3>
+
           <WarningCard warning={this.state.warning} />
-          <h5>Date</h5>
 
-          <input type="text" className="datepicker" value={this.state.date} onChange={this.handleDateChange.bind(this)}/>
+          <h5>User name</h5>
+          <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
 
-          <h5>Distance (km)</h5>
-          <input value={this.state.dist} onChange={this.handleDistChange.bind(this)}/>
+          <h5>Password</h5>
+          <input type="text" value={this.state.password} onChange={this.handlePasswordChange}/>
 
-          <h5>Time (minutes)</h5>
-          <input value={this.state.time} onChange={this.handleTimeChange.bind(this)}/>
+          <h5>Role</h5>
+          <input type="text" value={this.state.role} onChange={this.handleRoleChange}/>
 
 
-          <div className="btn blue" onClick={this.handleSubmit.bind(this)}>Submit</div>
+          <div className="btn blue" onClick={this.handleSubmit}>Submit</div>
           <span>  </span>
           <Link to="/run" className="btn blue">Cancel</Link>
           <span>  </span>
-          <div className="btn red" onClick={this.handleDelete.bind(this)}>Delete</div>
+          <div className="btn red" onClick={this.handleDelete}>Delete</div>
         </div>
     );
   }
 }
 
-export default RunItemDetail;
+export default UserItemDetail;
