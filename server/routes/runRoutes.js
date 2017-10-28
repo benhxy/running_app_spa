@@ -10,11 +10,9 @@ var run_controller = require("../controllers/runController");
  */
 
 //auth middleware
-/*
 router.use( function(req, res, next) {
-  //get token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  //no token error
+
+  var token = req.headers.token || req.headers['x-access-token'];
   if (!token) {
     res.json( {success: false, message: "No token provided"});
   }
@@ -29,22 +27,21 @@ router.use( function(req, res, next) {
   //all clear
   next();
 });
-*/
 
 /* normal user routes */
 
 //get run
-router.get("/", run_controller.run_list);
+router.get("/", run_controller.view);
 //get weekly report by user
-router.get("/report/", run_controller.run_report);
+router.get("/report/", run_controller.report);
 //get one run
-router.get("/:id", run_controller.run_item);
+router.get("/:id", run_controller.view_one);
 //create run
-router.post("/", run_controller.run_create);
+router.post("/", run_controller.create);
 //update run
-router.put("/:id", run_controller.run_update);
+router.put("/:id", run_controller.update);
 //delete run
-router.delete("/:id", run_controller.run_delete);
+router.delete("/:id", run_controller.delete);
 
 
 

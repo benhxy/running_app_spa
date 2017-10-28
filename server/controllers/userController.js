@@ -2,7 +2,7 @@
 var User = require("../models/user");
 
 //list all users - WORKING
-exports.user_list = function(req, res) {
+exports.view = function(req, res) {
   User.find(function(err, results) {
     if (err) {
       return res.json({success: false, message: "Fail to query", error: err});
@@ -12,7 +12,7 @@ exports.user_list = function(req, res) {
 };
 
 //get one user - WORKING
-exports.user_detail = function(req, res) {
+exports.view_one = function(req, res) {
   User.findById(req.params.id, function(err, result) {
     if (err || !result) {
       return res.json({success: false, message: "User not found"});
@@ -23,7 +23,7 @@ exports.user_detail = function(req, res) {
 };
 
 //create user - WORKING
-exports.user_create = function(req, res) {
+exports.create = function(req, res) {
 
   if (!req.body.name || !req.body.password || !req.body.role) {
     return res.json({success: false, message: "Please enter name, password and role"});
@@ -32,11 +32,7 @@ exports.user_create = function(req, res) {
   //check duplicate user name
   var new_user_name = req.body.name;
   User.find({name: new_user_name}, function(err, result) {
-    if (err) {
-      return res.json({success: false, message: "Fail to query user"});
-    }
-
-    if (result.length === 0) {
+    if (err || !result || result.length == 0) {
       var new_user = new User({
         name: req.body.name,
         password: req.body.password,
@@ -46,8 +42,7 @@ exports.user_create = function(req, res) {
         if (err) {
           return res.json({
             success: false,
-            message: "Fail to save user to database",
-            error: err
+            message: "Fail to save user to database"
           });
         } else {
           return res.json({success: true, message: user});
@@ -60,40 +55,30 @@ exports.user_create = function(req, res) {
 };
 
 //update user - WORKING
-exports.user_update = function(req, res) {
-
-  console.log("Req in controller");
-
-  User.find({name: req.body.name}, function(err, result) {
-    if (result.length > 0) {
-      return res.json({success: false, message: "This user name already exists"});
-    }
-  });
-
+exports.update = function(req, res) {
   User.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
       password: req.body.password,
       role: req.body.role
     },
-    function(err, user) {
+    function(err, result0) {
       if (err) {
-        return res.json({success: false, message: "Fail to update user", error: err});
+        return res.json({success: false, message: "Fail to update user"});
       } else {
-        User.findById(req.params.id, function(err, result) {
-          return res.json({success: true, message: result});
-        });
+        return res.json({success: true, message: result0});
       }
     }
   );
 };
 
 //remove user - WORKING
-exports.user_delete = function(req, res) {
-  User.findByIdAndRemove(req.params.id, function(err, user) {
-    if (err) {
-      return res.json({success: false, message: "Fail to remove user", error: err});
-    } else {
+
+exports.delete = function(req, res) {
+  User.findByIdAndRemove(req.params.id, function(err) {
+    if (!err) {
       return res.json({success: true, message: "User deleted!"});
+
+    } else {
+      return res.json({success: false, message: "Fail to remove user"});
     }
   });
 };

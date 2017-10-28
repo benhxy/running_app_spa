@@ -4,16 +4,11 @@ var jwt = require("jsonwebtoken");
 var config = require("../config");
 var user_controller = require("../controllers/userController");
 
-/* token struction:
- - id: user id
- - role: user role
- */
-
 //auth middleware
-/*
+
 router.use( function(req, res, next) {
   //get token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  var token = req.headers.token;
   //no token error
   if (!token) {
     res.json( {success: false, message: "No token provided"});
@@ -32,22 +27,17 @@ router.use( function(req, res, next) {
   //all clear
   next();
 });
-*/
 
-
-//get one user detail
-router.get('/:id', user_controller.user_detail);
 
 //get all users
-router.get('/', user_controller.user_list);
-
+router.get('/', user_controller.view);
+//get one user detail
+router.get('/:id', user_controller.view_one);
 //create user
-router.post("/", user_controller.user_create);
-
+router.post("/", user_controller.create);
 //update user
-router.put("/:id", user_controller.user_update);
-
-//delete user, protected by admin role
-router.delete("/:id", user_controller.user_delete);
+router.put("/:id", user_controller.update);
+//delete user
+router.delete("/:id", user_controller.delete);
 
 module.exports = router;

@@ -26,9 +26,7 @@ export default React.createClass(  {
   getRunDetail(){
     let runId = this.props.params.id;
 
-    axios.post(`/api/run/${runId}`,
-              {token: localStorage.getItem("RunAppToken"), action: "GET"},
-              {crossdomain: true})
+    axios.get(`/api/run/${runId}`, {headers: {token: localStorage.getItem("RunAppToken")}})
       .then((response) => {
         if (response.data.success) {
           this.setState({
@@ -84,11 +82,10 @@ export default React.createClass(  {
     const updatedRun = {
       date: this.state.date,
       dist: this.state.dist,
-      time: this.state.time,
-      token: localStorage.getItem("RunAppToken")
+      time: this.state.time
     }
 
-    axios.put(`/api/run/${runId}`, updatedRun, {crossdomain: true})
+    axios.put(`/api/run/${runId}`, updatedRun, {headers: {token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -102,7 +99,7 @@ export default React.createClass(  {
 
   handleDelete() {
     const runId = this.state.id;
-    axios.delete(`/api/run/${runId}`, {crossdomain: true})
+    axios.delete(`/api/run/${runId}`, {headers: {token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -126,7 +123,7 @@ export default React.createClass(  {
           <div className="input-field">
             <input type="date" className="datepicker" value={this.state.date} onChange={this.handleDateChange}/>
           </div>
-          
+
 
           <h5>Distance (km)</h5>
           <div className="input-field">

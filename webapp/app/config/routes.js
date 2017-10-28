@@ -12,10 +12,11 @@ function redirectToLogin(nextState, replace) {
   }
 }
 
-function handleLogOut() {
+function handleLogOut(nextState, replace) {
   localStorage.removeItem("RunAppToken");
   localStorage.removeItem("RunAppRole");
   localStorage.removeItem("RunAppUserId");
+  replace('/login');
 }
 
 function checkUrlExist(nextState, replace){
@@ -58,7 +59,6 @@ const routes = {
       path: '/logout',
       onEnter: handleLogOut
     },
-
     {
       path: '/run',
       getComponent(location, cb) {
@@ -67,9 +67,17 @@ const routes = {
         }, 'RunList');
       }
     },
+    {
+      path: '/run_new',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/RunCreate.js').default)
+        }, 'RunCreate');
+      }
+    },
 
     {
-      path: '/run/report',
+      path: '/run_report',
       getComponent(location, cb) {
         require.ensure([], (require) => {
           cb(null, require('../components/pages/RunReport.js').default)
@@ -85,7 +93,6 @@ const routes = {
         }, 'RunDetail');
       }
     },
-
     {
       path: '/run_admin',
       getComponent(location, cb) {
@@ -94,7 +101,14 @@ const routes = {
         }, 'RunListAdmin');
       }
     },
-
+    {
+      path: '/run_admin_new',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/RunCreateAdmin.js').default)
+        }, 'RunCreateAdmin');
+      }
+    },
     {
       path: '/run_admin/:id',
       getComponent(location, cb) {

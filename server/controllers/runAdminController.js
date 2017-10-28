@@ -8,13 +8,24 @@ var ObjectId = require("mongoose").Types.ObjectId;
 exports.view = function (req, res) {
   Run.find(function(err, results) {
     if (err) {
-      return res.json({success: false, message: "Fail to query", error: err});
+      return res.json({success: false, message: "Fail to query"});
     } else {
       return res.json({success: true, message: results});
     }
   });
 }
 
+
+//get one run item - WORKING
+exports.view_one = function(req, res) {
+  Run.findById(req.params.id, function(err, result) {
+    if (err) {
+      return res.json({success: false, message: "Record not found", error: err});
+    } else {
+      return res.json({success: true, message: result});
+    }
+  });
+};
 
 
 exports.create = function(req, res) {
@@ -35,7 +46,7 @@ exports.create = function(req, res) {
   if (req.body.user) {
     new_run.user = req.body.user;
   } else {
-    new_run.user = req.decoded.id;
+    new_run.user = req.decoded.user;
   }
 
   if (req.body.date) {
@@ -51,55 +62,35 @@ exports.create = function(req, res) {
   });
 };
 
-//get one run item - WORKING
-exports.view_one = function(req, res) {
-  Run.findById(req.params.id, function(err, result) {
-    if (err) {
-      return res.json({success: false, message: "Record not found", error: err});
+//update run - WORKING
+exports.update = function(req, res) {
+  var updatedRun = {};
+  if (req.body.dist) {
+    updatedRun.dist = req.body.dist;
+  }
+  if (req.body.time) {
+    updatedRun.time = req.body.time;
+  }
+  if (req.body.date) {
+    updatedRun.date = new Date(req.body.date);
+  }
+
+  Run.findByIdAndUpdate(req.params.id, updatedRun, function(err, result) {
+    if (err || !result){
+      return res.json({success: false, message: "Fail to update the record"});
     } else {
       return res.json({success: true, message: result});
     }
   });
 };
 
-//update run - WORKING
-exports.run_update = function(req, res) {
-
-  if (false) {  //req.decoded.role !== "admin"
-    return res.json({success: false, message: "No permission to access other users' records"});
-  } else {
-    var updatedRun = {};
-    if (req.body.dist) {
-      updatedRun.dist = req.body.dist;
-    }
-    if (req.body.time) {
-      updatedRun.time = req.body.time;
-    }
-    if (req.body.date) {
-      updatedRun.date = req.body.date;
-    }
-
-    Run.findByIdAndUpdate(req.params.id, updatedRun, function(err, run) {
-      if (err || !run){
-        return res.json({success: false, message: "Fail to update the record", error: err});
-      } else {
-        return res.json({success: true, message: result});
-      }
-    });
-  }
-};
-
 //delete run - WORKING
-exports.run_delete = function(req, res) {
-  if (false) {  //req.decoded.role !== "admin"
-    return res.json({success: false, message: "No permission to access other users' records"});
-  } else {
-    Run.findByIdAndRemove(req.params.id, function(err, run) {
-      if (err || !run){
-        return res.json({success: false, message: "Fail to delete record", error: err});
-      } else {
-        return res.json({success: true, messgae: "Record deleted"});
-      }
-    });
-  }
+exports.delete = function(req, res) {
+  Run.findByIdAndRemove(req.params.id, function(err, run) {
+    if (err || !run){
+      return res.json({success: false, message: "Fail to delete record", error: err});
+    } else {
+      return res.json({success: true, messgae: "Record deleted"});
+    }
+  });
 };

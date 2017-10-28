@@ -5,11 +5,8 @@ var ObjectId = require("mongoose").Types.ObjectId;
 
 
 //get run by user - WORKING
-exports.run_list = function(req, res) {
-
-console.log(JSON.stringify(req.headers.token));
-
-  Run.find({user: new ObjectId(req.headers.userId)}, function(err, results) {
+exports.view = function(req, res) {
+  Run.find({user: new ObjectId(req.decoded.user)}, function(err, results) {
     if (err) {
       return res.json({success: false, message: "Fail to query", error: err});
     } else {
@@ -19,26 +16,25 @@ console.log(JSON.stringify(req.headers.token));
 };
 
 //get one run item - NEED ACCESS CONTROL
-exports.run_item = function(req, res) {
-
-  if (false) {  //req.decoded.role !== "admin"
-    return res.json({success: false, message: "No permission to access other users' records"});
-  } else {
-    Run.findById(req.params.id, function(err, result) {
-      if (err) {
-        return res.json({success: false, message: "Record not found", error: err});
-      } else {
+exports.view_one = function(req, res) {
+  Run.findById(req.params.id, function(err, result) {
+    if (err) {
+      return res.json({success: false, message: "Record not found", error: err});
+    } else {
+      if (result.user == req.decoded.user) {
         return res.json({success: true, message: result});
+      } else {
+        return res.json({success: false, message: "No permission to access other users' records"});
       }
-    });
-  }
+    }
+  });
 };
 
 //create run - WORKING
-exports.run_create = function(req, res) {
+exports.create = function(req, res) {
 
   var new_run = new Run();
-  new_run.user = req.body.userId;
+  new_run.user = req.decoded.user;
   if (req.body.dist) {
     new_run.dist = req.body.dist;
   } else {
@@ -63,62 +59,62 @@ exports.run_create = function(req, res) {
 };
 
 //update run - WORKING
-exports.run_update = function(req, res) {
+exports.update = function(req, res) {
 
   Run.findById(req.params.id, function(err, run) {
     if (err || !run){
       return res.json({success: false, message: "Record not found", error: err});
     }
 
-    if (run.user !== req.body.userId) {
+    if (run.user == req.decoded.user) {
+      if (req.body.dist) {
+        run.dist = req.body.dist;
+      }
+      if (req.body.time) {
+        run.time = req.body.time;
+      }
+      if (req.body.date) {
+        run.date = req.body.date;
+      }
+
+      run.save(function(err, result) {
+        if (err){
+          return res.json({success: false, message: "Fail to update the record", error: err});
+        } else {
+          return res.json({success: true, message: result});
+        }
+      });
+    } else {
       return res.json({success: false, message: "No permission to access other users' records"});
     }
-
-    if (req.body.dist) {
-      run.dist = req.body.dist;
-    }
-    if (req.body.time) {
-      run.time = req.body.time;
-    }
-    if (req.body.date) {
-      run.date = req.body.date;
-    }
-
-    run.save(function(err, result) {
-      if (err){
-        return res.json({success: false, message: "Fail to update the record", error: err});
-      } else {
-        return res.json({success: true, message: result});
-      }
-    });
-
   });
 };
 
 //delete run - WORKING
-exports.run_delete = function(req, res) {
+exports.delete = function(req, res) {
 
   Run.findById(req.params.id, function(err, run) {
     if (err || !run){
       return res.json({success: false, message: "Record not found", error: err});
     }
 
-    if (run.user !== req.body.userId) {
+    if (run.user != req.decoded.user) {
       return res.json({success: false, message: "No permission to access other users' records"});
     }
   });
 
   Run.findByIdAndRemove(req.params.id, function(err) {
     if (err) {
-      return res.json({success: false, message: "Fail to delete record", error: err});
+      return res.json({success: false, message: "Fail to delete record"});
+    } else {
+      return res.json({success: true, messgae: "Record deleted"});
     }
-    return res.json({success: true, messgae: "Record deleted"});
   });
 
 };
 
 //get weekly report by user - WORKING
-exports.run_report = function(req, res) {
+exports.report = function(req, res) {
 
   // Returns the ISO week of the date.
   Date.prototype.getWeek = function() {
@@ -140,8 +136,8 @@ exports.run_report = function(req, res) {
   }
 
   //get all run records by user_id
-  Run.find({user: new ObjectId(req.body.userId)}, function (err, runs) { //
-    if (err || runs.length === 0) {
+  Run.find({user: new ObjectId(req.decoded.user)}, function (err, runs) { //
+    if (err) {
       return res.json({success: false, message: "Fail to query record or no record", error: err});
     } else {
 
@@ -150,6 +146,9 @@ exports.run_report = function(req, res) {
       let count_map = new Map();
 
       for (let i = 0; i < runs.length; i++) {
+
+        console.log();
+
         let run_time = runs[i].time;
         let run_dist = runs[i].dist;
         let run_week = runs[i].date.getWeekYear() + " - Week " + runs[i].date.getWeek();
