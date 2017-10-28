@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-
-import WarningCard from "./WarningCard";
-
 import axios from 'axios';
+import WarningCard from "./WarningCard";
 
 export default React.createClass({
 
@@ -14,17 +12,11 @@ export default React.createClass({
   },
 
   postLogin(loginData) {
-    let reqConfig = {
-      method: "post",
-      url: "/api/auth/login/",
-      crossdomain: true,
-      data: loginData
-    };
-
-    axios.request(reqConfig)
+    axios.post("/api/auth/login/", loginData, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
-          localStorage.token = response.data.token;
+          localStorage.setItem("RunAppToken", response.data.token);
+          localStorage.setItem("RunAppRole", response.data.role);
           this.props.history.push("/run");
         } else {
           this.setState({warning: response.data.message});

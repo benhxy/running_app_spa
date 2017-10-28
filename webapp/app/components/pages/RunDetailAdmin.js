@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
-import fetch from "../../utils/fetch";
+import axios from 'axios';
 import moment from "moment";
 
 import WarningCard from "./WarningCard";
@@ -26,7 +26,7 @@ class RunItemDetail extends Component {
   getRunDetail(){
     let runId = this.props.match.params.id;
 
-    axios.get(`http://localhost:3001/api/run_admin/${runId}`, {crossdomain: true})
+    axios.post(`/api/run_admin/${runId}`, {token: localStorage.token}, {crossdomain: true})
       .then((response) => {
         if (response.data.success) {
           this.setState({
@@ -85,7 +85,7 @@ class RunItemDetail extends Component {
       time: this.state.time
     }
 
-    axios.put(`http://localhost:3001/api/run_admin/${runId}`, updatedRun, {crossdomain: true})
+    axios.put(`/api/run_admin/${runId}`, updatedRun, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -99,7 +99,7 @@ class RunItemDetail extends Component {
 
   handleDelete() {
     const runId = this.state.id;
-    axios.delete(`http://localhost:3001/api/run_admin/${runId}`, {crossdomain: true})
+    axios.delete(`/api/run_admin/${runId}`, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");

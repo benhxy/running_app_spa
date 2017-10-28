@@ -46,15 +46,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       '/api/*': {
-        target: 'http://127.0.0.1:8081',
-        secure: false
-      },
-      '/api-token-auth': {
-        target: 'http://127.0.0.1:8081',
-        secure: false
-      },
-      '/media/*': {
-        target: 'http://127.0.0.1:8081',
+        target: 'http://localhost:3001',
         secure: false
       }
     }

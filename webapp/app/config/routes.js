@@ -2,7 +2,7 @@ import App from '../components/App';
 
 if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
 
-function redirectToHome(nextState, replace) {
+function redirectToLogin(nextState, replace) {
   var path = '/';
   if (auth.loggedIn()) {
     replace(path);
@@ -20,12 +20,21 @@ const routes = {
   indexRoute: {
     getComponent(location, cb) {
       require.ensure([], (require) => {
-        cb(null, require('../components/pages/RunListAdmin.js').default)
-      }, 'RunListAdmin');
+        cb(null, require('../components/pages/RunList.js').default)
+      }, 'RunList');
     }
   },
   childRoutes: [
     //site display part related routes
+    {
+      path: '/signup',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/Signup.js').default)
+        }, 'Signup');
+      }
+    },
+
     {
       path: '/login',
       getComponent(location, cb) {
@@ -36,22 +45,67 @@ const routes = {
     },
 
     {
-      path: '/signup',
+      path: '/run',
       getComponent(location, cb) {
         require.ensure([], (require) => {
-          cb(null, require('../components/pages/Signup.js').default)
-        }, 'Signup');
+          cb(null, require('../components/pages/RunList.js').default)
+        }, 'RunList');
       }
     },
 
-    // {
-    //   path: '/report',
-    //   getComponent(location, cb) {
-    //     require.ensure([], (require) => {
-    //       cb(null, require('../components/pages/RunReport.js').default)
-    //     }, 'RunReport');
-    //   }
-    // },
+    {
+      path: '/run/report/',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/RunReport.js').default)
+        }, 'RunReport');
+      }
+    },
+
+    {
+      path: '/run/:id',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/RunDetail.js').default)
+        }, 'RunDetail');
+      }
+    },
+
+    {
+      path: '/run_admin',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/RunListAdmin.js').default)
+        }, 'RunListAdmin');
+      }
+    },
+
+    {
+      path: '/run_admin/:id',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/RunDetailAdmin.js').default)
+        }, 'RunDetailAdmin');
+      }
+    },
+
+    {
+      path: '/user',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/UserList.js').default)
+        }, 'UserList');
+      }
+    },
+
+    {
+      path: '/user/:id',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/UserDetail.js').default)
+        }, 'UserDetail');
+      }
+    },
 
     {
       path: '*',

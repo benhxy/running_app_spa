@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import fetch from "../../utils/fetch";
-
+import axios from "axios";
 import WarningCard from "./WarningCard";
 
 export default React.createClass( {
 
   getInitialState() {
-    // super(props);
     return {
       compName: "Create new account",
       warning: "",
@@ -14,12 +12,11 @@ export default React.createClass( {
   },
 
   postSignup(signupData) {
-    //fetch(url, config{method, body{}})
-    fetch("/api/auth/signup/",
-          {method: "POST", body: signupData})
+    axios.post("/api/auth/signup/", signupData, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
-          localStorage.token = response.data.token;
+          localStorage.setItem("RunAppToken", response.data.token);
+          localStorage.setItem("RunAppRole", response.data.role);
           this.props.history.push("/run");
         } else {
           this.setState({warning: response.data.message});
