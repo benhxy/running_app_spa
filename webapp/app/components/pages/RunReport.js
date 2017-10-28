@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from "moment";
-import fetch from "../../utils/fetch";
+import axios from "axios";
 
 import RunListItem from "./RunListItem";
 import WarningCard from "./WarningCard";

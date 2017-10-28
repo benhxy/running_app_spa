@@ -3,9 +3,12 @@ import App from '../components/App';
 if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
 
 function redirectToLogin(nextState, replace) {
-  var path = '/';
-  if (auth.loggedIn()) {
-    replace(path);
+  var path = '/login';
+  if (!localStorage.getItem("RunAppToken")) {
+    replace({
+      pathname: path,
+      state: { nextPathname: nextState.location.pathname }
+    });
   }
 }
 
@@ -17,6 +20,7 @@ function checkUrlExist(nextState, replace){
 const routes = {
   path: '/',
   component: App,
+  onEnter: redirectToLogin,
   indexRoute: {
     getComponent(location, cb) {
       require.ensure([], (require) => {
