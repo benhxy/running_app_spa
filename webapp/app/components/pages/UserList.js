@@ -22,12 +22,22 @@ export default React.createClass(  {
 
   getUserList(){
     //load run list from server, sort and deep copy into states
-    axios.get("/api/user/", {crossdomain: true})
+    axios.get("/api/user/", {headers:{token: localStorage.getItem("RunAppToken")}})
       .then((response) => {
         if (response.data.success) {
-          this.setState({
-           userList: response.data.message
-          });
+          let sortedList = response.data.message.sort(
+            function compare(a, b) {
+              if (a.name == b.name) {
+                return 0;
+              }
+              //latest run logs first
+              if (a.name < b.name) {
+                return -1;
+              }
+              return 1;
+            }
+          );
+          this.setState({userList: sortedList});
         } else {
           this.setState({warning: response.data.message});
         }
@@ -39,8 +49,8 @@ export default React.createClass(  {
 
   render() {
     const userItems = this.state.userList.map(
-      function(user, index) {
-        return (<UserListItem key={user._id} item={user} index={index}/>);
+      function(item, index) {
+        return (<UserListItem key={item._id} item={item} index={index}/>);
       }
     );
 

@@ -6,15 +6,18 @@ exports.view = function(req, res) {
   User.find(function(err, results) {
     if (err) {
       return res.json({success: false, message: "Fail to query", error: err});
+    } else {
+      //console.log(JSON.stringify(results));
+      return res.json({success: true, message: results});
     }
-    return res.json({success: true, message: results});
   });
 };
 
 //get one user - WORKING
 exports.view_one = function(req, res) {
+
   User.findById(req.params.id, function(err, result) {
-    if (err || !result) {
+    if (err) {
       return res.json({success: false, message: "User not found"});
     } else {
       return res.json({success: true, message: result});
@@ -32,24 +35,24 @@ exports.create = function(req, res) {
   //check duplicate user name
   var new_user_name = req.body.name;
   User.find({name: new_user_name}, function(err, result) {
-    if (err || !result || result.length == 0) {
-      var new_user = new User({
-        name: req.body.name,
-        password: req.body.password,
-        role: req.body.role
-      });
+    if (result.length > 0) {
+      return res.json({success: false, message: "User name already exists"});
+    } else {
+      var new_user = new User();
+      new_user.name = req.body.name;
+      new_user.password = req.body.password;
+      new_user.role = req.body.role;
+
       new_user.save(function(err, user) {
         if (err) {
           return res.json({
             success: false,
-            message: "Fail to save user to database"
+            message: "Fail to save user to database" + JSON.stringify(err)
           });
         } else {
           return res.json({success: true, message: user});
         }
       });
-    } else {
-      return res.json({success: false, message: "User name already exists"});
     }
   });
 };

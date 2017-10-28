@@ -31,7 +31,7 @@ export default React.createClass( {
         if (response.data.success) {
           let sortedList = response.data.message.sort(
             function compare(a, b) {
-              if (moment(a.date) === moment(b.date)) {
+              if (moment(a.date) == moment(b.date)) {
                 return 0;
               }
               //latest run logs first

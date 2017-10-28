@@ -26,9 +26,7 @@ export default React.createClass(  {
   getRunDetail(){
     let runId = this.props.params.id;
 
-    axios.post(`/api/run_admin/${runId}`,
-              {token: localStorage.getItem("RunAppToken"), action: "GET"},
-              {crossdomain: true})
+    axios.get(`/api/run_admin/${runId}`, {headers: {token: localStorage.getItem("RunAppToken")}})
       .then((response) => {
         if (response.data.success) {
           this.setState({
@@ -84,11 +82,10 @@ export default React.createClass(  {
     const updatedRun = {
       date: this.state.date,
       dist: this.state.dist,
-      time: this.state.time,
-      token: localStorage.getItem("RunAppToken")
+      time: this.state.time
     }
 
-    axios.put(`/api/run_admin/${runId}`, updatedRun, {crossdomain: true})
+    axios.put(`/api/run_admin/${runId}`, updatedRun, {headers: {token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -102,7 +99,7 @@ export default React.createClass(  {
 
   handleDelete() {
     const runId = this.state.id;
-    axios.delete(`/api/run_admin/${runId}`, {crossdomain: true})
+    axios.delete(`/api/run_admin/${runId}`, {headers: {token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -120,32 +117,30 @@ export default React.createClass(  {
         <div>
           <h3>{this.state.compName}</h3>
           <WarningCard warning={this.state.warning} />
-          
-          
+
           <form>
           <h5>Date</h5>
           <div className="input-field">
-            <input type="text" className="datepicker" value={this.state.date} onChange={this.handleDateChange}/>
+            <input type="date" className="datepicker" value={this.state.date} onChange={this.handleDateChange}/>
           </div>
-          
+
 
           <h5>Distance (km)</h5>
           <div className="input-field">
             <input value={this.state.dist} onChange={this.handleDistChange}/>
           </div>
-          
 
           <h5>Time (minutes)</h5>
-
           <div className="input-field">
             <input value={this.state.time} onChange={this.handleTimeChange}/>
           </div>
-          
-          <a href="javascript:" className="btn blue" onClick={this.handleSubmit}>Submit</a>
+
+
+          <a href="javascript:;" className="btn blue" onClick={this.handleSubmit}>Submit</a>
           <span>  </span>
           <Link to="/run" className="btn blue">Cancel</Link>
           <span>  </span>
-          <a href="javascript" className="btn red" onClick={this.handleDelete}>Delete</a>
+          <a href="javascript:;" className="btn red" onClick={this.handleDelete}>Delete</a>
           </form>
         </div>
     );

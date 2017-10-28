@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from "moment";
 import axios from "axios";
 
-import RunListItem from "./RunListItem";
+import RunListItemAdmin from "./RunListItemAdmin";
 import WarningCard from "./WarningCard";
 
 export default React.createClass( {
@@ -25,12 +25,13 @@ export default React.createClass( {
   getRunList(){
     //load run list from server, sort and deep copy into states
     //fetch(url, config{method, body{}})
-    axios.get("/api/run_admin/", {crossdomain: true})
+    axios.get("/api/run_admin/",
+              {headers:{token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
           let sortedList = response.data.message.sort(
             function compare(a, b) {
-              if (moment(a.date) === moment(b.date)) {
+              if (moment(a.date) == moment(b.date)) {
                 return 0;
               }
               //latest run logs first
@@ -41,8 +42,8 @@ export default React.createClass( {
             }
           );
           this.setState({
-            runList: JSON.parse(JSON.stringify(response.data.message)),
-            runListFiltered: JSON.parse(JSON.stringify(response.data.message))
+            runList: JSON.parse(JSON.stringify(sortedList)),
+            runListFiltered: JSON.parse(JSON.stringify(sortedList))
           });
         } else {
           this.setState({warning: response.data.message});
@@ -92,7 +93,7 @@ export default React.createClass( {
   render() {
     const runItems = this.state.runListFiltered.map(
       function(run, index) {
-        return (<RunListItem key={run._id} item={run} index={index}/>);
+        return (<RunListItemAdmin key={run._id} item={run} index={index}/>);
       }
     );
 
@@ -121,6 +122,7 @@ export default React.createClass( {
         <tbody>
           <tr>
             <th>#</th>
+            <th>User ID</th>
             <th>Date</th>
             <th>Distance (km)</th>
             <th>Time (min)</th>

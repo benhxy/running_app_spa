@@ -17,8 +17,9 @@ router.use( function(req, res, next) {
   jwt.verify(token, config.secret, function(err, decoded) {
     if (err) {
       res.json( {success: false, message: "Fail to verify token"});
+    } else {
+      req.decoded = decoded;
     }
-    req.decoded = decoded;
   });
   //permission error
   if (req.decoded.role !== "userManager" && req.decoded.role !== "admin") {

@@ -23,9 +23,13 @@ export default React.createClass(  {
 
   getUserDetail(){
     let userId = this.props.params.id;
+    console.log(userId);
 
-    axios.post(`/api/user/${userId}`, {token: localStorage.getItem("RunAppToken"), action: "GET"}, {crossdomain: true})
+    axios.get(`/api/user/${userId}`, {headers:{token: localStorage.getItem("RunAppToken")}})
       .then((response) => {
+
+        console.log(response.data);
+
         if (response.data.success) {
           this.setState({
             id: userId,
@@ -58,11 +62,11 @@ export default React.createClass(  {
     evt.preventDefault();
     //validate data
     //validate input
-    if (this.state.name === "") {
+    if (this.state.name == "") {
       this.setState({warning: "Please enter a valid name"});
       return;
     }
-    if (this.state.password === "") {
+    if (this.state.password == "") {
       this.setState({warning: "Please enter a password"});
       return;
     }
@@ -77,16 +81,15 @@ export default React.createClass(  {
   putUser() {
     const userId = this.state.id;
     const updatedUser = {
-      date: this.state.date,
-      dist: this.state.dist,
-      time: this.state.time,
-      token: localStorage.getItem("RunAppToken")
+      name: this.state.name,
+      password: this.state.password,
+      role: this.state.role
     }
 
-    axios.put(`/api/user/${userId}`, updatedUser, {crossdomain: true})
+    axios.put(`/api/user/${userId}`, updatedUser, {headers:{token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
-          this.setState({warning: response.data.message});
+          this.props.history.push("/user");
         } else {
           //error from server
           this.setState({warning: response.data.message});
@@ -99,7 +102,7 @@ export default React.createClass(  {
 
   handleDelete() {
     const userId = this.state.id;
-    axios.delete(`/api/run_admin/${userId}`, {crossdomain: true})
+    axios.delete(`/api/user/${userId}`, {headers:{token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/user");

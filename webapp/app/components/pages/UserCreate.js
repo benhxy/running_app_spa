@@ -12,13 +12,10 @@ export default React.createClass( {
   },
 
   postSignup(signupData) {
-    axios.post("/api/auth/signup/", signupData, {crossdomain: true})
+    axios.post("/api/user/", signupData, {headers: {token: localStorage.getItem("RunAppToken")}})
       .then(response => {
         if (response.data.success) {
-          localStorage.setItem("RunAppToken", response.data.token);
-          localStorage.setItem("RunAppRole", response.data.role);
-          localStorage.setItem("RunAppUserId", response.data.user);
-          this.props.history.push("/run");
+          this.props.history.push("/user");
         } else {
           this.setState({warning: response.data.message});
         }
@@ -28,15 +25,21 @@ export default React.createClass( {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    
-    if (this.refs.name.value == "" || this.refs.password.value == "" || this.ref.role.value == "") {
+
+    if (this.refs.name.value == "" || this.refs.password.value == "" || this.refs.role.value == "") {
       this.setState({warning: "Please enter name, password and role"});
+      return;
+    }
+
+    if (this.refs.role.value != "user" && this.refs.role.value != "userManager" && this.refs.role.value != "admin") {
+      this.setState({warning: "Please use user, admin or userManager role"});
       return;
     }
 
     const signupData = {
       name: this.refs.name.value,
-      password: this.refs.password.value
+      password: this.refs.password.value,
+      role: this.refs.role.value
     };
     this.postSignup(signupData);
   },
@@ -58,6 +61,11 @@ export default React.createClass( {
             <h5>Password</h5>
             <div className="input-field">
               <input type="password" name="password" ref="password"/>
+            </div>
+
+            <h5>Role</h5>
+            <div className="input-field">
+              <input type="text" name="role" ref="role"/>
             </div>
 
             <input type="submit" value= "Sign up" className="btn red"/>

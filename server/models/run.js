@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 var RunSchema = new Schema({
   date: {type: Date, required: true, default: Date.now},
-  dist: {type: Number, required: true, max: 1000},
-  time: {type: Number, required: true, max: 1440},
+  dist: {type: Number, required: true},
+  time: {type: Number, required: true},
   user: {type: Schema.Types.ObjectId, ref:"User", required: true}
 },{
   toObject: {virtuals: true},

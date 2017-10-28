@@ -1,7 +1,6 @@
 //import models
 var Run = require("../models/run");
 var User = require("../models/user");
-var ObjectId = require("mongoose").Types.ObjectId;
 
 
 //view all or create one - WORKING
@@ -43,11 +42,7 @@ exports.create = function(req, res) {
     return res.json({success: false, message: "Time cannot be empty"});
   }
 
-  if (req.body.user) {
-    new_run.user = req.body.user;
-  } else {
-    new_run.user = req.decoded.user;
-  }
+  new_run.user = req.body.id;
 
   if (req.body.date) {
     new_run.date = req.body.date;
@@ -55,7 +50,7 @@ exports.create = function(req, res) {
 
   new_run.save(function(err, result) {
     if (err || !result){
-      return res.json({success: false, message: "Fail to save the record", error: err});
+      return res.json({success: false, message: "Fail to save the record"  + JSON.stringify(err)});
     } else {
       return res.json({success: true, message: result});
     }

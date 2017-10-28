@@ -45,7 +45,6 @@ const routes = {
         }, 'Signup');
       }
     },
-
     {
       path: '/login',
       getComponent(location, cb) {
@@ -54,7 +53,6 @@ const routes = {
         }, 'Login');
       }
     },
-
     {
       path: '/logout',
       onEnter: handleLogOut
@@ -75,7 +73,6 @@ const routes = {
         }, 'RunCreate');
       }
     },
-
     {
       path: '/run_report',
       getComponent(location, cb) {
@@ -84,7 +81,6 @@ const routes = {
         }, 'RunReport');
       }
     },
-
     {
       path: '/run/:id',
       getComponent(location, cb) {
@@ -126,7 +122,6 @@ const routes = {
         }, 'UserList');
       }
     },
-
     {
       path: '/user/:id',
       getComponent(location, cb) {
@@ -135,7 +130,14 @@ const routes = {
         }, 'UserDetail');
       }
     },
-
+    {
+      path: '/user_new',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/UserCreate.js').default)
+        }, 'UserCreate');
+      }
+    },
     {
       path: '/about',
       getComponent(location, cb) {
