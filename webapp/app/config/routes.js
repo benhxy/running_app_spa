@@ -26,8 +26,8 @@ function checkUrlExist(nextState, replace){
 const routes = {
   path: '/',
   component: App,
-  onEnter: redirectToLogin,
   indexRoute: {
+    onEnter: redirectToLogin,
     getComponent(location, cb) {
       require.ensure([], (require) => {
         cb(null, require('../components/pages/RunList.js').default)

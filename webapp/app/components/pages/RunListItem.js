@@ -4,8 +4,6 @@ import {Link} from "react-router";
 export default React.createClass({
 
   render() {
-    const item = this.state.item;
-
     return (
         <tr>
           <td>

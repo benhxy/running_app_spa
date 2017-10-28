@@ -7,19 +7,18 @@ import WarningCard from "./WarningCard";
 
 class UserListAdmin extends Component {
 
-  constructor() {
-    super();
-    this.state = {
+  getInitialState() {
+    return {
       compName: "Manage users",
       userList: [],
       warning: ""
     };
-  }
+  },
 
   componentWillMount() {
     //load data before mounting
     this.getUserList();
-  }
+  },
 
   getUserList(){
     //load run list from server, sort and deep copy into states
@@ -36,7 +35,7 @@ class UserListAdmin extends Component {
       .catch((err) => {
         this.setState({warning: JSON.stringify(err)});
       });
-  }
+  },
 
   render() {
     const userItems = this.state.userList.map(

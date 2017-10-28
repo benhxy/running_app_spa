@@ -17,11 +17,11 @@ class RunDetailAdmin extends Component {
       dist: 0.0,
       warning: ""
     }
-  }
+  },
 
   componentWillMount() {
     this.getRunDetail();
-  }
+  },
 
   getRunDetail(){
     let runId = this.props.match.params.id;
@@ -44,19 +44,19 @@ class RunDetailAdmin extends Component {
       .catch((err) => {
         console.log(err);
       });
-  }
+  },
 
   handleDateChange(evt){
     this.setState({date: evt.target.value});
-  }
+  },
 
   handleDistChange(evt){
     this.setState({dist: evt.target.value});
-  }
+  },
 
   handleTimeChange(evt){
     this.setState({time: evt.target.value});
-  }
+  },
 
   handleSubmit(evt) {
     evt.preventDefault();
@@ -77,7 +77,7 @@ class RunDetailAdmin extends Component {
     }
 
     this.putRun();
-  }
+  },
 
   putRun() {
     const runId = this.state.id;
@@ -98,7 +98,7 @@ class RunDetailAdmin extends Component {
         }
       })
       .catch((err) => console.log(err));
-  }
+  },
 
   handleDelete() {
     const runId = this.state.id;
@@ -112,7 +112,7 @@ class RunDetailAdmin extends Component {
         }
       })
       .catch((err) => console.log(err));
-  }
+  },
 
   render() {
 

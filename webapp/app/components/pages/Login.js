@@ -36,14 +36,13 @@ export default React.createClass({
   },
 
   render() {
-    console.log(this.props.params.id);
     return (
         <div>
           <h3>{this.state.compName}</h3>
 
           <WarningCard warning={this.state.warning} />
 
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <form onSubmit={this.handleSubmit}>
 
             <h5>Username</h5>
             <div className="input-field">

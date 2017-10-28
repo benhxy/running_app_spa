@@ -2,7 +2,7 @@ $tablet-width: 768px;
 $desktop-width: 1025px;
 
 @mixin mobile {
-  @media (ax-width: #{$tablet-width - 1px}) {
+  @media (max-width: #{$tablet-width - 1px}) {
     @content;
   }
 }

@@ -6,9 +6,8 @@ import WarningCard from "./WarningCard";
 
 class UserItemDetail extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+   getInitialState() {
+    return {
       compName: "User details",
       id: "",
       name: "",
@@ -16,11 +15,11 @@ class UserItemDetail extends Component {
       role: "",
       warning: ""
     }
-  }
+  },
 
   componentWillMount() {
     this.getUserDetail();
-  }
+  },
 
   getUserDetail(){
     let userId = this.props.match.params.id;
@@ -41,19 +40,19 @@ class UserItemDetail extends Component {
       .catch((err) => {
         this.setState({warning: err};
       });
-  }
+  },
 
   handleNameChange(evt){
     this.setState({name: evt.target.value});
-  }
+  },
 
   handlePasswordChange(evt){
     this.setState({password: evt.target.value});
-  }
+  },
 
   handleRoleChange(evt){
     this.setState({role: evt.target.value});
-  }
+  },
 
   handleSubmit(evt) {
     evt.preventDefault();
@@ -73,7 +72,7 @@ class UserItemDetail extends Component {
     }
 
     this.putUser();
-  }
+  },
 
   putUser() {
     const userId = this.state.id;
@@ -96,7 +95,7 @@ class UserItemDetail extends Component {
       .catch((err) => {
         this.setState({warning: err};
       });
-  }
+  },
 
   handleDelete() {
     const userId = this.state.id;
@@ -112,7 +111,7 @@ class UserItemDetail extends Component {
       .catch((err) => {
         this.setState({warning: err};
       });
-  }
+  },
 
   render() {
     return (

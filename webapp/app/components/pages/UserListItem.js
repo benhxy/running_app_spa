@@ -4,13 +4,12 @@ import {Link} from "react-router-dom";
 
 class UserListItem extends Component {
 
-  constructor(props) {
-    super(props);
+  getInitialState() { 
     this.state = {
       item: this.props.item,
       index: this.props.index
     }
-  }
+  },
 
 
   render() {
