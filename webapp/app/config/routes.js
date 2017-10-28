@@ -69,7 +69,7 @@ const routes = {
     },
 
     {
-      path: '/run/report/',
+      path: '/run/report',
       getComponent(location, cb) {
         require.ensure([], (require) => {
           cb(null, require('../components/pages/RunReport.js').default)
@@ -119,6 +119,15 @@ const routes = {
         require.ensure([], (require) => {
           cb(null, require('../components/pages/UserDetail.js').default)
         }, 'UserDetail');
+      }
+    },
+
+    {
+      path: '/about',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/About.js').default)
+        }, 'About');
       }
     },
 

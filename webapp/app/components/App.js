@@ -38,13 +38,13 @@ const App = React.createClass({
 			<div className="menu-bg" onClick={this.toggleMenu}></div>
 			<ul className="menu-list">
 				<li className="menu-item">
-					{this.state.ifLoign ? <Link to="/" className="menu-link">Add a running record</Link> : <span></span>}					 
+					{this.state.ifLogin ? <Link to="/" className="menu-link">Add a running record</Link> : <span></span>}				 
 				</li>
 				<li className="menu-item">
-					{this.state.ifLoign ? <Link to="/" className="menu-link">Running records</Link> : <span></span>}
+					{this.state.ifLogin ? <Link to="/" className="menu-link">Running records</Link> : <span></span>}	
 				</li>
 				<li className="menu-item">
-					{this.state.ifLoign ? <Link to="/" className="menu-link">Running report</Link> : <span></span>}
+					{this.state.ifLogin ? <Link to="/" className="menu-link">Running report</Link> : <span></span>}
 				</li>
 				<li className="menu-item">
 					{this.state.roleName == "admin" ? <Link to="/" className="menu-link">Manage records as Admin</Link> : <span></span>}
@@ -53,7 +53,7 @@ const App = React.createClass({
 					{this.state.roleName == "admin" ? <Link to="/" className="menu-link">Manage users as Admin</Link> : (this.state.roleName == "userManager" ? <Link to="/" className="menu-link">Manage users as Admin</Link> : <span></span>)}
 				</li>
 				<li className="menu-item">
-					<Link to="/" className={"menu-link " + (this.props.location.pathname == "/about" ? "current" : "")}>About</Link> 
+					<Link to="/about" className={"menu-link " + (this.props.location.pathname == "/about" ? "current" : "")}>About</Link> 
 				</li>
 				<li className="menu-item">
 					{this.state.ifLogin ? <Link to="/" className="menu-link">Logout</Link> : <span></span>}

@@ -24,7 +24,7 @@ export default React.createClass(  {
   },
 
   getRunDetail(){
-    let runId = this.props.match.params.id;
+    let runId = this.props.params.id;
 
     axios.post(`/api/run/${runId}`,
               {token: localStorage.getItem("RunAppToken"), action: "GET"},
@@ -120,22 +120,31 @@ export default React.createClass(  {
         <div>
           <h3>{this.state.compName}</h3>
           <WarningCard warning={this.state.warning} />
-          <h5>Date</h5>
 
-          <input type="text" className="datepicker" value={this.state.date} onChange={this.handleDateChange}/>
+          <form>
+          <h5>Date</h5>
+          <div className="input-field">
+            <input type="date" className="datepicker" value={this.state.date} onChange={this.handleDateChange}/>
+          </div>
+          
 
           <h5>Distance (km)</h5>
-          <input value={this.state.dist} onChange={this.handleDistChange}/>
+          <div className="input-field">
+            <input value={this.state.dist} onChange={this.handleDistChange}/>
+          </div>
 
           <h5>Time (minutes)</h5>
-          <input value={this.state.time} onChange={this.handleTimeChange}/>
+          <div className="input-field">
+            <input value={this.state.time} onChange={this.handleTimeChange}/>
+          </div>
 
 
-          <div className="btn blue" onClick={this.handleSubmit}>Submit</div>
+          <a href="javascript:;" className="btn blue" onClick={this.handleSubmit}>Submit</a>
           <span>  </span>
           <Link to="/run" className="btn blue">Cancel</Link>
           <span>  </span>
-          <div className="btn red" onClick={this.handleDelete}>Delete</div>
+          <a href="javascript:;" className="btn red" onClick={this.handleDelete}>Delete</a>
+          </form>
         </div>
     );
   }

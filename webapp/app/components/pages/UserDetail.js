@@ -22,7 +22,7 @@ export default React.createClass(  {
   },
 
   getUserDetail(){
-    let userId = this.props.match.params.id;
+    let userId = this.props.params.id;
 
     axios.post(`/api/user/${userId}`, {token: localStorage.getItem("RunAppToken"), action: "GET"}, {crossdomain: true})
       .then((response) => {
@@ -119,22 +119,29 @@ export default React.createClass(  {
           <h3>{this.state.compName}</h3>
 
           <WarningCard warning={this.state.warning} />
-
+          <form>
           <h5>User name</h5>
-          <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
+          <div className="input-field">
+            <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
+          </div>
 
           <h5>Password</h5>
-          <input type="text" value={this.state.password} onChange={this.handlePasswordChange}/>
+          <div className="input-field">
+            <input type="text" value={this.state.password} onChange={this.handlePasswordChange}/>
+          </div>
 
           <h5>Role</h5>
-          <input type="text" value={this.state.role} onChange={this.handleRoleChange}/>
+          <div className="input-field">
+            <input type="text" value={this.state.role} onChange={this.handleRoleChange}/>
+          </div>
 
 
-          <div className="btn blue" onClick={this.handleSubmit}>Submit</div>
+          <a href="javascript:;" className="btn blue" onClick={this.handleSubmit}>Submit</a>
           <span>  </span>
           <Link to="/run" className="btn blue">Cancel</Link>
           <span>  </span>
-          <div className="btn red" onClick={this.handleDelete}>Delete</div>
+          <a href="javascript:;" className="btn red" onClick={this.handleDelete}>Delete</a>
+          </form>
         </div>
     );
   }
