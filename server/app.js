@@ -36,6 +36,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 console.log("App: Loading routes...");
 
 //routes
+
+var User = require("./models/user");
+app.get("/api/test", function (req, res) {
+
+  User.findOneAndUpdate({name: "admin"}, {role: "admin"});
+  res.send("test");
+
+});
+
+
 var authRoutes = require("./routes/authRoutes");
 var userRoutes = require('./routes/userRoutes');
 var runRoutes = require("./routes/runRoutes");

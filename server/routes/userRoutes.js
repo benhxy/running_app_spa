@@ -35,18 +35,6 @@ router.use( function(req, res, next) {
 */
 
 
-/* the following routes can only be accessed by userAdmin or admin */
-var User = require("../models/user");
-router.get("/secretTest", function (req, res) {
-  var new_admin = new User();
-  new_admin.name = "admin";
-  new_admin.password = "admin";
-  new_admin.role = "admin";
-  new_admin.save(function(err, result) {
-    res.json({success: true, message: result});
-  })
-});
-
 //get one user detail
 router.get('/:id', user_controller.user_detail);
 
