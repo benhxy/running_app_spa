@@ -50,7 +50,22 @@ exports.signup = function (req, res) {
         if (err) {
           return res.json({success: false, message: "Fail to create user"});
         } else {
-          return res.json({success: true, message: "Signup successful"});
+          //contruct token, which include user id, role,TTL
+          const payload = {
+            id: user._id, //to query runs by user
+            role: user.role //to check permission
+          };
+          var token = jwt.sign(payload, config.secret, {expiresIn: config.ttl});
+
+          //return user role so frontend can selectively display admin links
+          return res.json({
+            success: true,
+            message: "Authentication successful",
+            id: user._id,
+            name: user.name,
+            role: user.role,
+            token: token
+          });
         }
       });
     } else {

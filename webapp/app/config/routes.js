@@ -1,70 +1,64 @@
-import App from '../components/App'
+import App from '../components/App';
 
-if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require)
+if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
 
 function redirectToHome(nextState, replace) {
-  var path = nextState.params.lang == 'tc' ? '/tc' : '/';
+  var path = '/';
   if (auth.loggedIn()) {
-    replace(path)
+    replace(path);
   }
 }
 
 function checkUrlExist(nextState, replace){
-  replace('/')
+  replace('/');
 }
 
-function checkLang(nextState, replace){
-  var pathname = nextState.location.pathname
-  if(pathname.substring(0, 3) == "/tc") {
-    nextState.params.lang = 'tc'
-  }
-}
-
-function checkChangeLang(prevState, nextState, replace){
-  var pathname = nextState.location.pathname
-  if(pathname.substring(0, 3) == "/tc") {
-    nextState.params.lang = 'tc'
-  }
-}
 
 const routes = {
-  path: '/(tc)',
+  path: '/',
   component: App,
-  indexRoute: { 
+  indexRoute: {
     getComponent(location, cb) {
       require.ensure([], (require) => {
-        cb(null, require('../components/pages/Home.js').default)
-      }, 'Home');
+        cb(null, require('../components/pages/RunListAdmin.js').default)
+      }, 'RunListAdmin');
     }
   },
-  onEnter: checkLang,
-  onChange: checkChangeLang,
   childRoutes: [
     //site display part related routes
     {
-      path: '(tc/)upload',
+      path: '/login',
       getComponent(location, cb) {
         require.ensure([], (require) => {
-          cb(null, require('../components/pages/Upload.js').default)
-        }, 'Upload');
+          cb(null, require('../components/pages/Login.js').default)
+        }, 'Login');
       }
     },
 
     {
-      path: '(tc/)privacy',
+      path: '/signup',
       getComponent(location, cb) {
         require.ensure([], (require) => {
-          cb(null, require('../components/pages/Privacy.js').default)
-        }, 'Privacy');
+          cb(null, require('../components/pages/Signup.js').default)
+        }, 'Signup');
       }
     },
-    
+
+    {
+      path: '/report',
+      getComponent(location, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('../components/pages/RunReport.js').default)
+        }, 'RunReport');
+      }
+    },
+
     {
       path: '*',
       onEnter: checkUrlExist
     }
   ],
 
-}
+};
 
-export default routes
+export default routes;
