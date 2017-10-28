@@ -10,7 +10,6 @@ mongoose.connect(mongoDB, {useMongoClient: true});
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-console.log("App: Loading middlewares...");
 
 //allow cross-domain
 app.use(function(req, res, next) {
@@ -31,9 +30,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-console.log("App: Loading routes...");
+console.log("Final version");
 
 //routes
 /*
