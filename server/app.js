@@ -40,12 +40,10 @@ var authRoutes = require("./routes/authRoutes");
 var userRoutes = require('./routes/userRoutes');
 var runRoutes = require("./routes/runRoutes");
 var runAdminRoutes = require("./routes/runAdminRoutes");
-var reportRoutes = require("./routes/reportRoutes");
 app.use("/api/auth", authRoutes);
 app.use('/api/user', userRoutes);
 app.use("/api/run", runRoutes);
 app.use("/api/run_admin", runAdminRoutes);
-app.use("/api/report", reportRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

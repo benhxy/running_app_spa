@@ -24,7 +24,7 @@ export default React.createClass( {
   getRunReport(){
     //load run list from server, sort and deep copy into states
     //fetch(url, config{method, body{}})
-    axios.post("/api/report/",
+    axios.post("/api/run/report",
               {token : localStorage.getItem("RunAppToken"),
                action: "GET"},
               {crossdomain: true})

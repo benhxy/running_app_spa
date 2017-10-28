@@ -17,7 +17,7 @@ export default React.createClass( {
         if (response.data.success) {
           localStorage.setItem("RunAppToken", response.data.token);
           localStorage.setItem("RunAppRole", response.data.role);
-          localStorage.setItem("RunAppUserId", response.data.role);
+          localStorage.setItem("RunAppUserId", response.data.user);
           this.props.history.push("/run");
         } else {
           this.setState({warning: response.data.message});

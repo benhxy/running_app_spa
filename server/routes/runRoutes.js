@@ -32,8 +32,11 @@ router.use( function(req, res, next) {
 */
 
 /* normal user routes */
+
 //get run
 router.get("/", run_controller.run_list);
+//get weekly report by user
+router.get("/report/", run_controller.run_report);
 //get one run
 router.get("/:id", run_controller.run_item);
 //create run
@@ -42,8 +45,7 @@ router.post("/", run_controller.run_create);
 router.put("/:id", run_controller.run_update);
 //delete run
 router.delete("/:id", run_controller.run_delete);
-//get weekly report by user
-router.get("/report/", run_controller.run_report);
+
 
 
 module.exports = router;

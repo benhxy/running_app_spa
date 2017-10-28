@@ -16,7 +16,7 @@ exports.get_token = function(req, res) {
 
     //contruct token, which include user id, role,TTL
     const payload = {
-      id: user._id, //to query runs by user
+      user: user._id, //to query runs by user
       role: user.role //to check permission
     };
     var token = jwt.sign(payload, config.secret, {expiresIn: config.ttl});
@@ -25,7 +25,7 @@ exports.get_token = function(req, res) {
     return res.json({
       success: true,
       message: "Authentication successful",
-      id: user._id,
+      user: user._id,
       name: user.name,
       role: user.role,
       token: token
@@ -52,7 +52,7 @@ exports.signup = function (req, res) {
         } else {
           //contruct token, which include user id, role,TTL
           const payload = {
-            id: user._id, //to query runs by user
+            user: user._id, //to query runs by user
             role: user.role //to check permission
           };
           var token = jwt.sign(payload, config.secret, {expiresIn: config.ttl});
@@ -60,8 +60,8 @@ exports.signup = function (req, res) {
           //return user role so frontend can selectively display admin links
           return res.json({
             success: true,
-            message: "Authentication successful",
-            id: user._id,
+            message: "Registration successful",
+            user: user._id,
             name: user.name,
             role: user.role,
             token: token

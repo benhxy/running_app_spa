@@ -10,11 +10,11 @@ var run_admin_controller = require("../controllers/runAdminController");
  */
 
 //auth middleware
-  /*
+
 router.use( function(req, res, next) {
 
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  
+
   if (!token) {
     console.log("No token");
     return res.json( {success: false, message: "No token provided"} );
@@ -27,25 +27,19 @@ router.use( function(req, res, next) {
     req.decoded = decoded;
   });
 
-  console.log("Passed validation");
+  console.log("Admin passed validation");
   next();
 });
-*/
 
-/* admin routes */
 
-//get report
-router.get("/report", run_admin_controller.run_report);
-//get one run
-router.get("/:id", run_admin_controller.run_item);
-//get run
-router.get("/", run_admin_controller.run_list);
 
-//create run
-router.post("/", run_admin_controller.run_create);
-//update run
+//view all or create one
+router.post("/", run_admin_controller.view_or_create);
+//view one
+router.post("/:id", run_admin_controller.get_one_item);
+//update one
 router.put("/:id", run_admin_controller.run_update);
-//delete run
+//delete one
 router.delete("/:id", run_admin_controller.run_delete);
 
 
