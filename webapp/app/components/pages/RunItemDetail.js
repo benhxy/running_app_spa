@@ -5,11 +5,11 @@ import moment from "moment";
 
 import WarningCard from "./WarningCard";
 
-export default React.createClass( {
+class RunItemDetail extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+  getInitialState() {
+    // super(props);
+    return {
       compName: "Run details",
       id: "",
       date: "",
@@ -17,17 +17,16 @@ export default React.createClass( {
       dist: 0.0,
       warning: ""
     }
-  },
+  }
 
   componentWillMount() {
     this.getRunDetail();
-  },
+  }
 
   getRunDetail(){
     let runId = this.props.match.params.id;
 
-    fetch(`/api/run/${runId}`,
-          {method: "GET", body: {token: localStorage.token}})
+    axios.get(`http://localhost:3001/api/run_admin/${runId}`, {crossdomain: true})
       .then((response) => {
         if (response.data.success) {
           this.setState({
@@ -43,19 +42,19 @@ export default React.createClass( {
       .catch((err) => {
         console.log(err);
       });
-  },
+  }
 
   handleDateChange(evt){
     this.setState({date: evt.target.value});
-  },
+  }
 
   handleDistChange(evt){
     this.setState({dist: evt.target.value});
-  },
+  }
 
   handleTimeChange(evt){
     this.setState({time: evt.target.value});
-  },
+  }
 
   handleSubmit(evt) {
     evt.preventDefault();
@@ -76,7 +75,7 @@ export default React.createClass( {
     }
 
     this.putRun();
-  },
+  }
 
   putRun() {
     const runId = this.state.id;
@@ -86,8 +85,7 @@ export default React.createClass( {
       time: this.state.time
     }
 
-    fetch(`/api/run/${runId}`,
-          {method: "PUT", body: {token: localStorage.token}})
+    axios.put(`http://localhost:3001/api/run_admin/${runId}`, updatedRun, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -97,12 +95,11 @@ export default React.createClass( {
         }
       })
       .catch((err) => console.log(err));
-  },
+  }
 
   handleDelete() {
     const runId = this.state.id;
-    fetch(`/api/run/${runId}`,
-          {method: "DELETE", body: {token: localStorage.token}})
+    axios.delete(`http://localhost:3001/api/run_admin/${runId}`, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/run");
@@ -112,7 +109,7 @@ export default React.createClass( {
         }
       })
       .catch((err) => console.log(err));
-  },
+  }
 
   render() {
 
@@ -139,4 +136,6 @@ export default React.createClass( {
         </div>
     );
   }
-});
+}
+
+export default RunItemDetail;

@@ -5,9 +5,9 @@ import WarningCard from "./WarningCard";
 
 export default React.createClass( {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+  getInitialState() {
+    // super(props);
+    return {
       compName: "Create new account",
       warning: "",
     }
@@ -15,8 +15,8 @@ export default React.createClass( {
 
   postSignup(signupData) {
     //fetch(url, config{method, body{}})
-    fetch({"/api/auth/signup/",
-          {method = "POST", body: signupData}})
+    fetch("/api/auth/signup/",
+          {method: "POST", body: signupData})
       .then(response => {
         if (response.data.success) {
           localStorage.token = response.data.token;

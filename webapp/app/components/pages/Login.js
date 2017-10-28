@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 
 import WarningCard from "./WarningCard";
 
+import axios from 'axios';
+
 export default React.createClass({
 
-  constructor(props) {
-    super(props);
-    this.state = {
+  getInitialState() {
+    return {
       compName: "Log in",
       warning: "",
     }

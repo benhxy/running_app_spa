@@ -44,14 +44,14 @@ const routes = {
       }
     },
 
-    {
-      path: '/report',
-      getComponent(location, cb) {
-        require.ensure([], (require) => {
-          cb(null, require('../components/pages/RunReport.js').default)
-        }, 'RunReport');
-      }
-    },
+    // {
+    //   path: '/report',
+    //   getComponent(location, cb) {
+    //     require.ensure([], (require) => {
+    //       cb(null, require('../components/pages/RunReport.js').default)
+    //     }, 'RunReport');
+    //   }
+    // },
 
     {
       path: '*',

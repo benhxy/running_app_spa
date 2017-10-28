@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 
 export default React.createClass({
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      item: this.props.item,
-      index: this.props.index
-    }
-  },
-
 
   render() {
     const item = this.state.item;
@@ -18,14 +9,14 @@ export default React.createClass({
     return (
         <tr>
           <td>
-            <Link to={`/run/${item._id}`}>
-              #{this.state.index + 1}
+            <Link to={`/run/${this.props.item._id}`}>
+              #{this.props.index + 1}
             </Link>
           </td>
-          <td>{new Date(item.date).toDateString()}</td>
-          <td>{Number(item.dist).toFixed(2)}</td>
-          <td>{Number(item.time).toFixed(0)}</td>
-          <td>{Number(item.speed).toFixed(2)}</td>
+          <td>{new Date(this.props.item.date).toDateString()}</td>
+          <td>{Number(this.props.item.dist).toFixed(2)}</td>
+          <td>{Number(this.props.item.time).toFixed(0)}</td>
+          <td>{Number(this.props.item.speed).toFixed(2)}</td>
         </tr>
     );
   }

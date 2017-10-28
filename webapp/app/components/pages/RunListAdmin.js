@@ -7,9 +7,9 @@ import WarningCard from "./WarningCard";
 
 export default React.createClass( {
 
-  constructor() {
-    super();
-    this.state = {
+  getInitialState() {
+    // super();
+    return {
       compName: "Running log",
       runList: [],
       runListFiltered: [],

@@ -1,2 +1,2 @@
 webpack
-scp -i ~/project/deploy.pem -r dist ec2-user@ec2-52-5-205-226.compute-1.amazonaws.com:/data/app/solusrex/webapp
+scp -i ~/project/key02.pem -r dist ubuntu@ec2-34-211-230-26.us-west-2.compute.amazonaws.com:~/Projects/
