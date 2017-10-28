@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 
 
-class UserListItem extends Component {
+export default React.createClass(  {
 
-  getInitialState() { 
+  getInitialState() {
     this.state = {
       item: this.props.item,
       index: this.props.index
@@ -31,6 +31,4 @@ class UserListItem extends Component {
 
     );
   }
-}
-
-export default UserListItem;
+});

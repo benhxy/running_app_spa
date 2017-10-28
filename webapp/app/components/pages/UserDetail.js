@@ -4,7 +4,7 @@ import axios from "axios";
 
 import WarningCard from "./WarningCard";
 
-class UserItemDetail extends Component {
+export default React.createClass(  {
 
    getInitialState() {
     return {
@@ -38,7 +38,7 @@ class UserItemDetail extends Component {
         }
       })
       .catch((err) => {
-        this.setState({warning: err};
+        this.setState({warning: err});
       });
   },
 
@@ -93,13 +93,13 @@ class UserItemDetail extends Component {
         }
       })
       .catch((err) => {
-        this.setState({warning: err};
+        this.setState({warning: err});
       });
   },
 
   handleDelete() {
     const userId = this.state.id;
-    axios.delete(`http://localhost:3001/api/run_admin/${userId}`, {crossdomain: true})
+    axios.delete(`/api/run_admin/${userId}`, {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           this.props.history.push("/user");
@@ -109,7 +109,7 @@ class UserItemDetail extends Component {
         }
       })
       .catch((err) => {
-        this.setState({warning: err};
+        this.setState({warning: err});
       });
   },
 
@@ -138,6 +138,4 @@ class UserItemDetail extends Component {
         </div>
     );
   }
-}
-
-export default UserItemDetail;
+});

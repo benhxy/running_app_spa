@@ -5,7 +5,7 @@ import moment from "moment";
 
 import WarningCard from "./WarningCard";
 
-class RunDetail extends Component {
+export default React.createClass(  {
 
   getInitialState() {
     // super(props);
@@ -139,6 +139,4 @@ class RunDetail extends Component {
         </div>
     );
   }
-}
-
-export default RunDetail;
+});

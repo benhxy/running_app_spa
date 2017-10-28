@@ -5,7 +5,7 @@ import moment from "moment";
 import UserListItem from "./UserListItem";
 import WarningCard from "./WarningCard";
 
-class UserListAdmin extends Component {
+export default React.createClass(  {
 
   getInitialState() {
     return {
@@ -26,7 +26,7 @@ class UserListAdmin extends Component {
       .then((response) => {
         if (response.data.success) {
           this.setState({
-           userList: response.data.message)
+           userList: response.data.message
           });
         } else {
           this.setState({warning: response.data.message});
@@ -65,6 +65,4 @@ class UserListAdmin extends Component {
       </div>
     );
   }
-}
-
-export default UserListAdmin;
+});
