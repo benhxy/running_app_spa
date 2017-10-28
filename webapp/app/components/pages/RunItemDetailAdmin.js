@@ -26,7 +26,7 @@ export default React.createClass( {
   getRunDetail(){
     let runId = this.props.match.params.id;
 
-    fetch(`/api/run/${runId}`,
+    fetch(`/api/run_admin/${runId}`,
           {method: "GET", body: {token: localStorage.token}})
       .then((response) => {
         if (response.data.success) {
@@ -86,7 +86,7 @@ export default React.createClass( {
       time: this.state.time
     }
 
-    fetch(`/api/run/${runId}`,
+    fetch(`/api/run_admin/${runId}`,
           {method: "PUT", body: {token: localStorage.token}})
       .then(response => {
         if (response.data.success) {
@@ -101,7 +101,7 @@ export default React.createClass( {
 
   handleDelete() {
     const runId = this.state.id;
-    fetch(`/api/run/${runId}`,
+    fetch(`/api/run_admin/${runId}`,
           {method: "DELETE", body: {token: localStorage.token}})
       .then(response => {
         if (response.data.success) {
