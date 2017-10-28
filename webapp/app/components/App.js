@@ -38,31 +38,31 @@ const App = React.createClass({
 			<div className="menu-bg" onClick={this.toggleMenu}></div>
 			<ul className="menu-list">
 				<li className="menu-item">
-					{this.state.ifLogin ? <Link to="/" className="menu-link">Add a running record</Link> : <span></span>}				 
+					{this.state.ifLogin ? <Link to="/" className="menu-link">Add a running record</Link> : <span></span>}
 				</li>
 				<li className="menu-item">
-					{this.state.ifLogin ? <Link to="/" className="menu-link">Running records</Link> : <span></span>}	
+					{this.state.ifLogin ? <Link to="/" className="menu-link">Running records</Link> : <span></span>}
 				</li>
 				<li className="menu-item">
 					{this.state.ifLogin ? <Link to="/" className="menu-link">Running report</Link> : <span></span>}
 				</li>
 				<li className="menu-item">
-					{this.state.roleName == "admin" ? <Link to="/" className="menu-link">Manage records as Admin</Link> : <span></span>}
+					{this.state.roleName == "admin" ? <Link to="/run_admin" className="menu-link">Manage records as Admin</Link> : <span></span>}
 				</li>
 				<li className="menu-item">
-					{this.state.roleName == "admin" ? <Link to="/" className="menu-link">Manage users as Admin</Link> : (this.state.roleName == "userManager" ? <Link to="/" className="menu-link">Manage users as Admin</Link> : <span></span>)}
+					{this.state.roleName == "admin" ? <Link to="/user" className="menu-link">Manage users as Admin</Link> : (this.state.roleName == "userManager" ? <Link to="/" className="menu-link">Manage users as Admin</Link> : <span></span>)}
 				</li>
 				<li className="menu-item">
-					<Link to="/about" className={"menu-link " + (this.props.location.pathname == "/about" ? "current" : "")}>About</Link> 
+					<Link to="/about" className={"menu-link " + (this.props.location.pathname == "/about" ? "current" : "")}>About</Link>
 				</li>
 				<li className="menu-item">
-					{this.state.ifLogin ? <Link to="/" className="menu-link">Logout</Link> : <span></span>}
+					{this.state.ifLogin ? <Link to="/logout" className="menu-link">Logout</Link> : <span></span>}
 				</li>
 				<li className="menu-item">
 					{this.state.ifLogin ? <span></span> : <Link to="/login" className={"menu-link " + (this.props.location.pathname == "/login" ? "current" : "")}>Login</Link>}
 				</li>
 				<li className="menu-item">
-					{this.state.ifLogin ? <span></span> : <Link to="/signup" className={"menu-link " + (this.props.location.pathname == "/signup" ? "current" : "")}>Sign up</Link>}	
+					{this.state.ifLogin ? <span></span> : <Link to="/signup" className={"menu-link " + (this.props.location.pathname == "/signup" ? "current" : "")}>Sign up</Link>}
 				</li>
 			</ul>
         </div>
@@ -73,4 +73,3 @@ const App = React.createClass({
 })
 
 export default App
-

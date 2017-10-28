@@ -22,7 +22,7 @@ export default React.createClass(  {
 
   getUserList(){
     //load run list from server, sort and deep copy into states
-    axios.post("/api/user/", {token: localStorage.getItem("RunAppToken"), action: "GET"}, {crossdomain: true})
+    axios.get("/api/user/", {crossdomain: true})
       .then((response) => {
         if (response.data.success) {
           this.setState({

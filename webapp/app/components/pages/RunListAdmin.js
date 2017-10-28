@@ -25,10 +25,7 @@ export default React.createClass( {
   getRunList(){
     //load run list from server, sort and deep copy into states
     //fetch(url, config{method, body{}})
-    axios.post("/api/run_admin/",
-              {token : localStorage.getItem("RunAppToken"),
-               action: "POST"},
-              {crossdomain: true})
+    axios.get("/api/run_admin/", {crossdomain: true})
       .then(response => {
         if (response.data.success) {
           let sortedList = response.data.message.sort(
@@ -44,8 +41,8 @@ export default React.createClass( {
             }
           );
           this.setState({
-            runList: JSON.parse(JSON.stringify(sortedList)),
-            runListFiltered: JSON.parse(JSON.stringify(sortedList))
+            runList: JSON.parse(JSON.stringify(response.data.message)),
+            runListFiltered: JSON.parse(JSON.stringify(response.data.message))
           });
         } else {
           this.setState({warning: response.data.message});

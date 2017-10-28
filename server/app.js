@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 console.log("App: Loading routes...");
 
 //routes
-
+/*
 var User = require("./models/user");
 app.get("/api/test", function (req, res) {
 
@@ -44,7 +44,7 @@ app.get("/api/test", function (req, res) {
   res.send("test");
 
 });
-
+*/
 
 var authRoutes = require("./routes/authRoutes");
 var userRoutes = require('./routes/userRoutes');

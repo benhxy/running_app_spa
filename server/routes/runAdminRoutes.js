@@ -10,7 +10,7 @@ var run_admin_controller = require("../controllers/runAdminController");
  */
 
 //auth middleware
-
+/*
 router.use( function(req, res, next) {
 
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -30,13 +30,15 @@ router.use( function(req, res, next) {
   console.log("Admin passed validation");
   next();
 });
+*/
 
 
-
-//view all or create one
-router.post("/", run_admin_controller.view_or_create);
-//view one
-router.post("/:id", run_admin_controller.get_one_item);
+//view all
+router.get("/", run_admin_controller.view);
+//view all
+router.get("/:id", run_admin_controller.view_one);
+//create one
+router.post("/", run_admin_controller.view);
 //update one
 router.put("/:id", run_admin_controller.run_update);
 //delete one

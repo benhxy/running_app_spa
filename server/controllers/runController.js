@@ -6,7 +6,10 @@ var ObjectId = require("mongoose").Types.ObjectId;
 
 //get run by user - WORKING
 exports.run_list = function(req, res) {
-  Run.find({user: new ObjectId(req.decoded.id)}, function(err, results) {
+
+console.log(JSON.stringify(req.headers.token));
+
+  Run.find({user: new ObjectId(req.headers.userId)}, function(err, results) {
     if (err) {
       return res.json({success: false, message: "Fail to query", error: err});
     } else {
@@ -35,7 +38,7 @@ exports.run_item = function(req, res) {
 exports.run_create = function(req, res) {
 
   var new_run = new Run();
-  new_run.user = req.decoded.id;
+  new_run.user = req.body.userId;
   if (req.body.dist) {
     new_run.dist = req.body.dist;
   } else {
@@ -67,7 +70,7 @@ exports.run_update = function(req, res) {
       return res.json({success: false, message: "Record not found", error: err});
     }
 
-    if (run.user !== req.decoded.id) {
+    if (run.user !== req.body.userId) {
       return res.json({success: false, message: "No permission to access other users' records"});
     }
 
@@ -100,7 +103,7 @@ exports.run_delete = function(req, res) {
       return res.json({success: false, message: "Record not found", error: err});
     }
 
-    if (run.user !== req.decoded.id) {
+    if (run.user !== req.body.userId) {
       return res.json({success: false, message: "No permission to access other users' records"});
     }
   });
@@ -137,7 +140,7 @@ exports.run_report = function(req, res) {
   }
 
   //get all run records by user_id
-  Run.find({user: new ObjectId(req.decoded.id)}, function (err, runs) { //
+  Run.find({user: new ObjectId(req.body.userId)}, function (err, runs) { //
     if (err || runs.length === 0) {
       return res.json({success: false, message: "Fail to query record or no record", error: err});
     } else {
